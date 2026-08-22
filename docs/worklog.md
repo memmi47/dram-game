@@ -397,3 +397,59 @@ Codex가 실제로 자기 브랜치를 만들어 작업을 시작하면서, PM�
 - `node build.js` 통과, 생성된 `index.html` 변경 없음.
 - `node validate.js` 완료. 기존 기준선 경고(전략 평균 격차 466%, 파산율 47%, 첫 전환 중앙값 T5)는
   그대로이며 이번 문서 변경으로 새 회귀는 발생하지 않았다.
+
+---
+
+## 2026-08-22 — Claude 감사 답변 검토·P0-E 독립 검증·인과 카드 계약 (담당: Codex)
+
+- **작업 ID**: `X-REVIEW-002`, `X-TRACE-001`, `P-001-A`
+- **요청·최종 결정**: `PM`
+- **주담당**: `Codex`
+- **실행 제품·모델**: OpenAI Codex / 정확한 런타임 모델 ID 미기록
+- **원 검증·코어 구현 담당**: `Claude`
+- **리뷰·최종 채택**: `Claude`, `PM`
+- **상태**: Codex 독립 검토와 문서 시안 완료
+
+### 입력
+
+- `origin/claude/dev` 커밋 `89c9585`의 `docs/plan-claude-response.md`, `tools/audit-repro.js`.
+- 현재 `src/core.js`, `docs/design-v0.4.md` §3.4, Codex 감사·계획 문서.
+
+### 검증·판단
+
+- Claude의 재현 스크립트를 독립 실행해 P0-A~E 5건을 모두 재현했다.
+- P0-E는 공급폭탄이 가격을 올리는 비정상 시드가 현재 9/14, 부호 반전 뒤 1/14임을 확인했다.
+- 공급 초과가 가격을 낮추도록 `capacityPressure`를 차감하는 방향에 동의했다.
+- 시대별 500시드 추가 실험에서 부호 수정 뒤 기본 행동의 ASP 연율 중앙값이 성숙기
+  -37.7%→-20.4%, 성장둔화기 -25.6%→-16.8%, AI +18.0%→+25.2%로 이동함을 확인했다.
+- 따라서 S0에서는 부호만 수정하고, 시대별 상수 재보정은 S2 fixture 기준선 이후 별도 작업으로 둔다.
+- D-001은 `P0 수정 → fixture → 하이브리드 A/B → PM 결정` 순서에 동의했다.
+- 현재 역산 Sufficiency를 실제 수급처럼 설명하지 않도록 trace 계약에 `implied_from_price`를 명시했다.
+- 결정 ID, 완료 예정·실제 턴, 결정/시장/경쟁사/시스템 원인 귀속과 근거 수준을 정의했다.
+- 동일 계약을 사용하는 Codex 인과 카드 시안 A의 화면 계층·표현 규칙·비교 기준을 작성했다.
+
+### 변경 제한 준수
+
+- `src/core.js`와 `validate.js`는 수정하지 않았다.
+- 카드 UI와 `src/trace.js` 구현은 시작하지 않고 문서 계약과 검증 도구만 작성했다.
+
+### 검증
+
+- Claude의 `tools/audit-repro.js` 실행: P0-A~E 5/5 `CONFIRMED`.
+- `node tools/codex-era-impact.js` 실행: 시대별 500시드 × 현재/부호수정 비교 완료.
+- `node --check tools/codex-era-impact.js`, `git diff --check` 통과.
+- `node build.js` 통과, `index.html` 변경 없음.
+- `node validate.js` 완료. 수정 전 기준선인 전략 격차 466%, 파산율 47%, 첫 전환 중앙값 T5 재확인.
+
+### 산출물
+
+- `docs/plan-codex-response.md`
+- `docs/trace-schema-v0.1.md`
+- `docs/causal-card-prototype-a.md`
+- `tools/codex-era-impact.js`
+
+### 다음 작업
+
+- `Claude`: S0~S3 구현 및 `trace-v0.1` 계약 리뷰·코어 훅 준비.
+- `Codex`: Claude 구현 뒤 P0 교차 검증, 승인된 fixture로 시안 A UI 구현.
+- `PM`: H-002, H-004, D-005 결정과 두 인과 카드 시안 최종 비교.

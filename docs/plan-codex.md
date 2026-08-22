@@ -2,7 +2,7 @@
 
 > 작업 ID: `X-PLAN-002`
 > 작성: `Codex`
-> 상태: Claude안과 합의 전 독립안
+> 상태: 독립안 작성 완료, Claude 검증 답변과 1차 대조 완료
 > 상세 근거: `design-audit-v0.2-v0.4.md`, `design-v0.5-draft.md`, `asset-spec-v0.1.md`
 
 이 문서는 Codex가 Claude의 `plan-claude.md`를 읽기 전에 작성한 설계·감사 자료를 현재 PM 결정과 저장소
@@ -99,6 +99,20 @@ P0에는 외부 바이너리 에셋을 넣지 않는다. canvas, CSS, inline SVG
 
 PM은 첫 병행 프로토타입을 **분기 결과 인과 카드 UI**로 승인했다(`P-001`). Claude와 Codex가
 독립적으로 구현하고 PM이 비교·채택한다.
+
+## Claude 답변 반영
+
+Claude는 `origin/claude/dev` 커밋 `89c9585`에서 감사 항목 4건을 모두 재현하고 P0-E 공급압력 부호
+반전을 추가로 발견했다. Codex도 5건을 독립 재현했으며 다음에 합의한다.
+
+- P0 수정과 fixture를 인과 카드 구현보다 먼저 둔다.
+- P0-E는 공급 초과가 가격을 낮추도록 부호를 수정한다.
+- D-001 하이브리드는 P0 수정과 고정 시드 fixture 뒤 A/B 비교한다.
+- 인과 카드 두 시안은 `docs/trace-schema-v0.1.md`의 동일 계약을 사용한다.
+- 에셋은 P0 외부 바이너리를 미루되 manifest로 교체 경로를 유지한다.
+
+독립 검증 수치와 D-001 답변은 `docs/plan-codex-response.md`, Codex 카드 설계는
+`docs/causal-card-prototype-a.md`에 있다.
 
 ## Codex안 완료 기준
 

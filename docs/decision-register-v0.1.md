@@ -25,12 +25,13 @@
 
 | ID | 결정 항목 | Codex 권장안 | Claude 의견 | 상태 | Human 결정 |
 |---|---|---|---|---|---|
-| D-001 | 시장 엔진 진실 원천 | 제한된 Supply/Demand + 정권 prior 하이브리드 | 대기 | 리뷰 대기 |  |
+| D-001 | 시장 엔진 진실 원천 | 제한된 Supply/Demand + 정권 prior 하이브리드 | 방향 동의·fixture 뒤 A/B | PM 결정 대기 |  |
 | D-002 | Ramp Valley 의미 | 전환 완료 뒤 정확히 2개 정산 분기 | 대기 | 리뷰 대기 |  |
 | D-003 | 분기당 3개 결정 | 코어와 검증 전략에도 동일하게 강제 | 대기 | 리뷰 대기 |  |
 | D-004 | 지배전략 판정 | 중앙값·하위25%·파산율·상위10% 함께 사용 | 대기 | 리뷰 대기 |  |
 | D-005 | 시대별 파산율 | AI 5~15%, 둔화 20~35%, 성숙 40~60% | 정밀화 후순위 | PM 결정 대기 |  |
 | D-006 | HBM 전환·퀄 | 미진입→투자→퀄→승인→램프 상태기계 | 대기 | 리뷰 대기 |  |
+| D-007 | 공급압력 부호 | 공급 초과가 가격을 낮추도록 `capacityPressure` 차감 | 확인·동의 | 승인 | Claude S0 구현, Codex 독립 검증 |
 
 상세 근거는 `docs/design-audit-v0.2-v0.4.md`에 있다.
 
@@ -39,7 +40,7 @@
 | ID | 결정 항목 | 제안 | 상태 | Human 결정 |
 |---|---|---|---|---|
 | A-001 | 개발 구조 | 현재 `src/` 분리 + `build.js` + 단일 `index.html` 유지 | 동의 | PM 승인 | `bf103ce` 구현 완료 |
-| A-002 | 에셋 범위 | P0는 canvas/inline SVG/CSS 우선, 외부 바이너리는 후순위 | 조건부 합의 | PM 결정 대기 |  |
+| A-002 | 에셋 범위 | P0는 canvas/inline SVG/CSS 우선, 외부 바이너리는 후순위 | 동의 | PM 승인 | manifest로 교체 경로 유지 |
 | R-001 | 고정 담당 이름 | PM / Claude / Codex | 동의 | PM 승인 | `team-plan.md` 기록 |
 | R-002 | 협업 방식 | 같은 문제를 별도 브랜치에서 병행 프로토타입 | 동의 | PM 승인 | 채택은 PM |
 | P-001 | 첫 병행 프로토타입 | 분기 결과 인과 카드 UI | 승인 | PM 승인 | Claude/Codex 독립 구현 뒤 PM 비교 |
@@ -53,7 +54,11 @@
 | X-004 v0.5 통합 초안 | `Codex` | 완료 | `docs/design-v0.5-draft.md` |
 | C-PLAN-001 Claude 독립안 | `Claude` | 완료 | `docs/plan-claude.md`, 커밋 `d46185b` |
 | X-PLAN-002 Codex 독립안 | `Codex` | 완료 | `docs/plan-codex.md` |
-| X-SYNTH-001 정반합 초안 | `Claude+Codex` | 대기 | Codex 브랜치 게시 후 진행 |
+| C-AUDIT-001 Codex 감사 검증 | `Claude` | 완료 | `origin/claude/dev` 커밋 `89c9585` |
+| X-REVIEW-002 P0-E 독립 검증·D-001 답변 | `Codex` | 완료 | `docs/plan-codex-response.md` |
+| X-TRACE-001 인과 추적 계약 | `Codex` | 초안 완료 | `docs/trace-schema-v0.1.md` |
+| P-001-A Codex 인과 카드 시안 | `Codex` | 설계 완료 | `docs/causal-card-prototype-a.md` |
+| X-SYNTH-001 정반합 초안 | `Claude+Codex` | 부분 합의 | P0 우선·인과 카드·에셋 정책·D-001 순서 합의 |
 | 최종 1차 합의 | `PM` | 대기 | 합의안의 PM 결정 항목 승인 필요 |
 
 ## 승인 방법
