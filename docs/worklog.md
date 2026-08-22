@@ -528,3 +528,52 @@ Codex가 위 항목에서 P0-A~E를 전부 독립 재현하고, P0-E 부호 수�
 ### 다음
 - S1: P0-A(Ramp Valley 1분기 결함) / P0-B(3개 결정 예산 코어 미강제) / P0-C(HBM 퀄 무임승차) /
   P0-D(CXMT initialGap 오용) 실패 테스트 작성 후 수정. → PM 지시로 우선순위 변경(아래 항목 참고).
+
+---
+
+## 2026-08-22 — 개발기획서 최종본 확정: design-v0.5.md (담당: PM+Claude, 기반 Codex)
+
+PM 지시: "목표를 더 구체화·현실적으로 바꾸고, 그걸 기반으로 개발기획서 최종본을 만들 것." Codex가
+이미 만들어둔 방대한 기획 자료(`design-v0.5-draft.md`, `decision-register-v0.1.md`,
+`asset-spec-v0.1.md`, `playtest-plan-v0.1.md`, `collaboration-plan-v0.1.md` 등)를 먼저 전부
+읽고, 그 위에서 승격 작업을 진행했다.
+
+### 브랜치 병합
+- `codex/design-v0.5`를 `claude/dev`에 병합(커밋 `3cf30ce`). 겹친 파일은 `worklog.md` 하나뿐이라
+  충돌도 그것 하나 — 두 로그를 실제 발생 순서(내 P0 감사 확인 → Codex의 PM결정/감사검토 항목 →
+  내 S0 완료)로 재정렬해 해결. 병합 후 `node build.js`(index.html 변경 없음), `node validate.js`,
+  `node tools/audit-repro.js` 재실행해 회귀 없음 확인.
+
+### PM 결정 3건 확보 (AskUserQuestion)
+- H-002(1회 플레이 시간): **30~40분**
+- H-004(진영 브랜드): **가상 브랜드명으로 전면 교체** — Claude·Codex 둘 다 "실명 유지"를
+  권고했으나 PM이 다른 방향 채택. 후속 작업(A-004, 브랜드명 작명 및 `FACTIONS`/에셋 카피 갱신)이
+  새로 생김, 담당 미정.
+- P0 에셋 11종(`asset-spec-v0.1.md`): **그대로 승인**.
+
+### 산출물
+- `docs/plan-synthesis.md` — 정-반-합 합의 결과 공식 정리(合). 처음부터 일치한 것/검증 거쳐 Claude가
+  물러선 것/순서만 합의하고 결론 미룬 것(D-001)/PM이 이번에 결정한 것/두 에이전트 권고와 다른 PM
+  결정(H-004)과 후속 작업을 구분해 기록.
+- `docs/decision-register-v0.1.md` 갱신 — H-002/H-004/A-003(자산목록) 승인 기록, D-002/D-003/
+  D-004/D-006을 "리뷰 대기"에서 "승인"으로 전환(Claude+Codex 실질 합의, 이견 없었음), D-001/D-005는
+  "의도적 유예"로 명확화, A-004(브랜드 작명) 신규 항목 추가.
+- **`docs/design-v0.5.md` — 개발기획서 최종본.** `design-v0.5-draft.md`를 뼈대로 승격하되:
+  - 원래 넓었던 목표 문장을 "이번 세션에서 실제로 완료된 4가지"로 구체화(§0).
+  - PM의 실제 결정값(H-002/H-004)을 "권장 시작점"에서 확정값으로 교체.
+  - S0 완료 결과(부호 수정 효과)를 시장 엔진 절에 반영, D-002~D-007 상태를 "승인"으로 갱신.
+  - v0.4 대비 변경 로그(§17) 신규 작성.
+  - §16 승인 조건 6개 항목을 전부 충족 처리로 마킹.
+- `docs/team-plan.md` — PM 결정 로그에 3건 추가, "design-v0.5.md가 이제 제품 스펙 권위 문서"임을
+  명시(팀 로지스틱스는 team-plan.md에 남김), 오픈 이슈에서 브랜드명 항목을 "실명 사용 여부"에서
+  "브랜드명 작명 담당"으로 갱신.
+
+### 검증
+- `node build.js`, `node validate.js`, `node tools/audit-repro.js` 모두 병합 전과 동일 결과.
+- 문서만 변경, `src/core.js`/`validate.js` 미변경.
+
+### 다음
+- A-004(브랜드명 작명) 담당·시안 결정 필요.
+- S1(P0-A/B/C/D 수정)은 여전히 다음 실행 단계로 대기 중 — 이번 세션은 기획 확정에 집중.
+- Codex에게 이 세션 결과(특히 H-004 방향 전환)를 전달 필요 — 두 에이전트 권고와 다른 PM 결정이라
+  `asset-spec-v0.1.md`의 A-COMP-001과 `causal-card-prototype-a.md` 카피 갱신에 영향.
