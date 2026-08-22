@@ -48,6 +48,13 @@
 | A-003 | P0 에셋 인벤토리 | `asset-spec-v0.1.md`의 11종 | 승인 | PM 승인 | 그대로 승인, 제작 착수는 A-004(브랜드) 이후 |
 | A-004 | 진영 브랜드명 신규 제작 | 한 단어 이름 4종 + 3자 이하 코드 | Codex 수정안 완료 | PM 결정 대기 | `docs/brand-name-proposals-v0.1.md`, 승인 전 사용 금지 |
 
+## 보드게임 BM 통합 결정
+
+| ID | 결정 항목 | Codex 권장안 | Claude 의견 | 상태 | Human 결정 |
+|---|---|---|---|---|---|
+| BM-001 | Brass·Kanban EV·Silicon Valley·Acquire BM 반영 범위 | 기존 1인 게임의 표현·상태 레이어로 선택 통합. 전체 규칙 결합은 별도 2~4인 모드 후보로 분리 | 독립 리뷰 대기 | PM 결정 대기 | `docs/benchmark-integration-v0.1.md` 검토 필요 |
+| BM-002 | 첫 BM 수직 슬라이스 | 5개 부서 Fab Operations Board + 프로젝트 타일 뒤집기 + 기존 인과 카드 연결 | 독립 리뷰 대기 | PM 결정 대기 | 코어·밸런스 변경 없이 A/B 프로토타입 제안 |
+
 ## 리뷰 실행 상태
 
 | 작업 | 담당 | 상태 | 증거 |
