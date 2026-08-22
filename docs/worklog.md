@@ -158,3 +158,15 @@ PM 지시: Codex가 이미 자체 개발 계획을 만들었으니, Claude도 �
 ### 다음 단계
 - `docs/plan-codex.md` 추가 대기 (Codex 산출물)
 - 두 안 대조 토론 → `docs/plan-synthesis.md`로 합의안 정리 예정
+
+---
+
+## 2026-08-22 — 브랜치 전략 확정: `main` 공유 베이스 + 각자 작업 브랜치 (담당: PM+Claude)
+
+Codex가 실제로 자기 브랜치를 만들어 작업을 시작하면서, PM이 브랜치 전략을 확정: `main`은 공유
+베이스로 두고 Claude/Codex가 각자 작업방 브랜치에서 병렬로 작업한다. `team-plan.md` 4.2에 기록.
+
+- `docs/team-plan.md`의 오픈 이슈였던 "동시 작업 시 브랜치 전략"을 이걸로 종결.
+- Claude는 `claude/dev` 브랜치를 새로 만들어 이후 작업은 여기서 진행하고, PM 검토 후 main에
+  머지(또는 PR)하는 흐름으로 전환. 지금까지처럼 `main`에 바로 커밋하는 건 이 시점부터 중단.
+- Codex 쪽 브랜치명은 아직 미확인 — 확인되면 `team-plan.md`에 기록.
