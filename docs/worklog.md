@@ -8,12 +8,23 @@
 
 - 모든 항목 제목에 **담당자**를 표기한다: `PM`(기획/최종 결정, 사용자) / `Claude`(Claude Code) /
   `Codex`(Codex) — 담당자가 여럿이면 나열, 협업이면 `PM+Claude` 식으로 표기.
+- 의미 있는 작업에는 `작업 ID`, `요청·최종 결정`, `주담당`, `실행 제품·모델`, `리뷰어`, `입력`,
+  `변경·판단`, `검증`, `미결 사항`, `산출물`을 가능한 범위에서 기록한다.
+- 담당 이름은 `PM` / `Claude` / `Codex`로 고정하고, 실제 제품·모델명은 별도 필드에 기록한다.
+  모델을 확인할 수 없으면 추측하지 않고 `미기록`으로 둔다.
 - 역할 분담 자체(누가 무엇을 맡는지)는 `docs/team-plan.md`에 살아있는 문서로 관리하고, 여기서는
   실제로 일어난 일만 시간순으로 기록한다.
 
 ---
 
 ## 2026-08-22 — v0.2 최초 구현 (담당: Claude) (PR #1, main 병합 완료)
+
+- **작업 ID**: `C-BASELINE-001`
+- **요청·최종 결정**: `PM`
+- **주담당**: `Claude`
+- **실행 제품·모델**: Claude Code / 정확한 모델명 미기록
+- **리뷰어**: 당시 별도 기록 없음
+- **상태**: 완료
 
 ### 배경
 
@@ -158,6 +169,189 @@ PM 지시: Codex가 이미 자체 개발 계획을 만들었으니, Claude도 �
 ### 다음 단계
 - `docs/plan-codex.md` 추가 대기 (Codex 산출물)
 - 두 안 대조 토론 → `docs/plan-synthesis.md`로 합의안 정리 예정
+---
+
+## 2026-08-22 — 공동 설계·업무분장 1차 초안
+
+- **작업 ID**: `X-PLAN-001`
+- **요청·최종 결정**: `PM`
+- **주담당**: `Codex`
+- **실행 제품·모델**: OpenAI Codex / 정확한 런타임 모델 ID 미기록
+- **리뷰어**: `Claude` 리뷰 대기, `PM` 승인 대기
+- **상태**: 진행 중
+
+### 입력
+
+- `docs/design-v0.4.md`
+- `docs/handoff-prompt-v0.2.md`
+- `docs/worklog.md`
+- `README.md`, `index.html`, `validate.js`
+- `main` 커밋 이력 `4e18ac5`, `b5fd44d`, `87254d9`
+
+### 변경·판단
+
+- 오늘의 목표를 에셋, 개발 구조, 게임성·유저 재미, Human·Claude Code·Codex 업무분장의 1차 합의로 정의했다.
+- 담당 주체가 모델 교체로 흐려지지 않도록 고정 에이전트 ID와 별도 모델 필드를 도입했다.
+- 합의되지 않은 구현을 시작하지 않고, `docs/collaboration-plan-v0.1.md`를 사용자 검토용 초안으로 작성했다.
+- 기존 v0.2 구현은 작성 정황과 사용자 확인에 따라 `Claude` 작업으로 소급 표기하되, 정확한 모델명은
+  기록이 없어 추정하지 않았다.
+
+### 검증
+
+- 기존 설계·인수인계·작업이력과 `index.html`·`validate.js`의 실제 구조를 대조했다.
+- 문서 초안에 목표, 미확정 전제, 재미 기둥, P0~P2 에셋, 단계적 개발 구조, 역할, 작업 큐, 완료 기준이
+  모두 포함됐는지 점검한다.
+
+### 미결 사항
+
+- `PM`: 타깃 유저, 플레이 시간, 현실성 비중, 진영 실명, 우선 배포 형태 결정.
+- `Claude`: 역할 분담, 단계적 TypeScript 이관, 첫 작업 큐 리뷰.
+- `PM`: 리뷰 반영 후 본 초안을 협업 기준으로 승인할지 결정.
+
+### 산출물
+
+- `docs/collaboration-plan-v0.1.md`
+- `docs/worklog.md` 기록 규칙 및 담당자 표기
+
+---
+
+## 2026-08-22 — 설계 감사·에셋·플레이테스트·Claude 리뷰 패키지
+
+- **작업 ID**: `X-DESIGN-001` (`X-001`, `X-002`, `X-003` 묶음)
+- **요청·최종 결정**: `PM`
+- **주담당**: `Codex`
+- **실행 제품·모델**: OpenAI Codex / 정확한 런타임 모델 ID 미기록
+- **리뷰어**: `Claude` 리뷰 대기, `PM` 승인 대기
+- **상태**: Codex 초안 완료, 공동 합의 대기
+
+### 입력
+
+- 기존 설계·인수인계·작업이력과 v0.2 전체 코드.
+- 2026-08-22 로컬 `node validate.js` 실행 결과.
+
+### 변경·판단
+
+- v0.4 요구와 v0.2 동작을 영역별로 대조해 일치·부분 구현·미구현·결함 의심으로 분류했다.
+- 현재 검증에서 전략 평균 격차 WARN(466%), 파산율 47%, 첫 노드 전환 중앙값 T5가 나옴을 기록했다.
+- P0 시각 에셋과 데이터·콘텐츠 에셋에 ID, 목적, 완료 기준, 담당·승인자를 부여했다.
+- 핵심 재미 가설 5개와 6명 규모의 1차 사람 플레이테스트 계획을 작성했다.
+- Claude Code가 구현을 바꾸기 전에 독립 리뷰를 남길 수 있도록 전용 리뷰 요청서를 작성했다.
+
+### 검증
+
+- `node validate.js` 실행 완료.
+- `git diff --check`로 문서 변경의 공백 오류를 검사한다.
+- 목표의 에셋, 개발 구조, 게임성·재미, 역할 분담, 담당 기록 요구를 각각 문서 산출물에 매핑한다.
+
+### 미결 사항
+
+- `Claude`: Codex 독립안 게시 후 `docs/plan-claude.md`와 정반합 비교.
+- `PM`: H-001~H-005와 P0 결정 D-001~D-006 승인·수정.
+- 공동 리뷰가 끝날 때까지 구현·에셋 제작은 시작하지 않는다.
+
+### 산출물
+
+- `docs/design-audit-v0.2-v0.4.md`
+- `docs/asset-spec-v0.1.md`
+- `docs/playtest-plan-v0.1.md`
+- `docs/decision-register-v0.1.md`
+
+---
+
+## 2026-08-22 — Claude Code 독립 리뷰 실행 시도
+
+- **작업 ID**: `C-REVIEW-001`
+- **요청·최종 결정**: `PM`
+- **조정·실행 요청**: `Codex`
+- **예정 주담당**: `Claude`
+- **실행 제품·모델**: Claude Code 2.1.223 / 모델 호출 전 인증 실패로 모델 미확정
+- **리뷰어**: `Codex` 예정
+- **상태**: Claude Code 로그인 대기
+
+### 실행 내용
+
+- 로컬 `claude` CLI 설치와 버전 2.1.223을 확인했다.
+- 로컬 임시 리뷰 프롬프트 범위로 비대화형 독립 리뷰 실행을 요청했다.
+- 구현 파일은 수정하지 않고 리뷰 문서와 작업이력만 작성하도록 권한 범위를 제한했다.
+
+### 검증
+
+- Claude Code 응답: `Not logged in · Please run /login`.
+- API 호출과 모델 추론은 시작되지 않았고 비용은 0으로 보고됐다.
+- `docs/claude-review-v0.1.md`는 아직 생성되지 않았다.
+
+### 미결 사항
+
+- `PM`: Claude Code 로그인 완료 또는 직접 로그인된 Claude Code 세션에서 리뷰 요청서 실행.
+- 로그인 후 같은 `C-REVIEW-001`을 재개하고 실제 모델명과 리뷰 결과를 기록한다.
+
+### 후속 정정
+
+- 위 인증 실패는 Codex 환경 안의 별도 Claude CLI에만 해당했다.
+- 이후 GitHub 최신 `main`에서 실제 Claude 세션의 `docs/plan-claude.md`와 후속 커밋을 확인했다.
+- 따라서 로컬 CLI 리뷰 요청은 폐기하고, Claude 독립안과 Codex 독립안을 Git 브랜치로 비교하는 방식으로 전환했다.
+
+---
+
+## 2026-08-22 — v0.5 공동 설계 통합 초안
+
+- **작업 ID**: `X-004`
+- **요청·최종 결정**: `PM`
+- **주담당**: `Codex`
+- **실행 제품·모델**: OpenAI Codex / 정확한 런타임 모델 ID 미기록
+- **리뷰어**: `Claude` 리뷰 대기, `PM` 승인 대기
+- **상태**: Codex 통합 초안 완료
+
+### 입력
+
+- `docs/design-v0.4.md`, `docs/handoff-prompt-v0.2.md`.
+- `docs/collaboration-plan-v0.1.md`, `docs/design-audit-v0.2-v0.4.md`.
+- `docs/asset-spec-v0.1.md`, `docs/playtest-plan-v0.1.md`, `docs/decision-register-v0.1.md`.
+
+### 변경·판단
+
+- 흩어진 설계·구조·에셋·재미·검증·업무분장을 `docs/design-v0.5-draft.md` 한 문서로 통합했다.
+- 승인되지 않은 제품 전제와 시스템 변경에는 H/D/A 결정 ID와 대기 상태를 유지했다.
+- 핵심 재미를 장기 베팅, 기회비용, 불확실성과 공정성, 경쟁사 읽기, 10년 회고로 정의했다.
+- 40턴 캠페인 리듬, HBM 상태기계, 인과 설명 UX, 단계적 TypeScript/Next.js 이관 게이트를 구체화했다.
+
+### 검증
+
+- v0.5 승인 조건을 Human 결정, Claude 리뷰, 의견 조정, 에셋·역할 승인, 이력 기록으로 명시했다.
+- v0.4를 아직 대체하지 않는 초안 상태와 구현 착수 금지 조건을 문서 상단·하단에 명시했다.
+
+### 미결 사항
+
+- Claude Code 인증 후 `C-REVIEW-001` 수행.
+- PM의 결정 레지스터 승인·수정.
+
+### 산출물
+
+- `docs/design-v0.5-draft.md`
+
+---
+
+## 2026-08-22 — Codex 독립안 원격 게시 준비 (담당: PM+Codex)
+
+- **작업 ID**: `X-SYNC-001`, `X-PLAN-002`
+- **요청·최종 결정**: `PM`
+- **주담당**: `Codex`
+- **실행 제품·모델**: OpenAI Codex / 정확한 런타임 모델 ID 미기록
+- **리뷰어**: `PM`, 이후 `Claude`
+- **상태**: `codex/design-v0.5` 브랜치 게시 준비
+
+### 변경·판단
+
+- 기존 로컬 Codex 문서를 stash로 보존하고 최신 `origin/main`의 `d46185b`에서 전용 브랜치를 만들었다.
+- Claude의 `team-plan.md`, `plan-claude.md`, 소스 분리 구조를 보존하면서 작업이력 충돌을 병합했다.
+- PM이 이미 결정한 캐주얼 유저·재미 우선·바닐라 JS 분리 빌드·병행 프로토타입 방식을 Codex 문서에 반영했다.
+- Next.js/TypeScript 이관 제안은 현 마일스톤에서 철회하고 플레이테스트 뒤 결정으로 보류했다.
+- Codex 독립안 요약을 `docs/plan-codex.md`로 추가했다.
+
+### 산출물
+
+- `docs/plan-codex.md`
+- `docs/design-v0.5-draft.md`와 설계 감사·에셋·플레이테스트 부속 문서
 
 ---
 
@@ -169,7 +363,7 @@ Codex가 실제로 자기 브랜치를 만들어 작업을 시작하면서, PM�
 - `docs/team-plan.md`의 오픈 이슈였던 "동시 작업 시 브랜치 전략"을 이걸로 종결.
 - Claude는 `claude/dev` 브랜치를 새로 만들어 이후 작업은 여기서 진행하고, PM 검토 후 main에
   머지(또는 PR)하는 흐름으로 전환. 지금까지처럼 `main`에 바로 커밋하는 건 이 시점부터 중단.
-- Codex 쪽 브랜치명은 아직 미확인 — 확인되면 `team-plan.md`에 기록.
+- Codex 쪽 작업 브랜치는 `codex/design-v0.5`로 확인 — `team-plan.md`에 기록.
 
 ---
 
@@ -222,11 +416,100 @@ WARN을 출력하고 있었다. 서로 다른 지표로 통과를 주장한 부�
 
 ---
 
+## 2026-08-22 — 첫 병행 프로토타입 주제 확정: 분기 결과 인과 카드 (담당: PM)
+
+- **작업 ID**: `P-001`
+- **요청·최종 결정**: `PM`
+- **구현 예정**: `Claude + Codex` 독립 병행
+- **리뷰·채택**: `PM`
+- **상태**: PM 승인, 구현 착수 전
+
+### 결정
+
+- Claude와 Codex가 첫 비교 실험으로 **분기 결과 인과 카드 UI**를 각자의 작업 브랜치에서 독립적으로
+  프로토타입한다.
+- 공통 목표는 턴 종료 뒤 현금·이익·가격 등 핵심 결과가 왜 변했는지, 어떤 과거 결정과 시차가
+  작용했는지를 캐주얼 유저가 이해하도록 만드는 것이다.
+- 이번 비교 범위에서는 시뮬레이션 수식·밸런스·신규 시스템과 외부 바이너리 에셋을 바꾸지 않는다.
+- 두 결과가 준비되면 PM이 이해도, 재미, 정보 밀도, 인과 정확성을 비교해 채택 또는 조합한다.
+
+### 다음 작업
+
+- `Claude`: `claude/dev`에서 독립 시안 구현.
+- `Codex`: 후속 `codex/...` 구현 브랜치에서 독립 시안 구현.
+- `PM`: 두 시안 비교·최종 채택.
+
+### 검증
+
+- 최신 `origin/main`의 브랜치 전략 기록과 Codex 작업이력을 모두 보존해 병합했다.
+- `git diff --check` 통과.
+- `node build.js` 통과, 생성된 `index.html` 변경 없음.
+- `node validate.js` 완료. 기존 기준선 경고(전략 평균 격차 466%, 파산율 47%, 첫 전환 중앙값 T5)는
+  그대로이며 이번 문서 변경으로 새 회귀는 발생하지 않았다.
+
+---
+
+## 2026-08-22 — Claude 감사 답변 검토·P0-E 독립 검증·인과 카드 계약 (담당: Codex)
+
+- **작업 ID**: `X-REVIEW-002`, `X-TRACE-001`, `P-001-A`
+- **요청·최종 결정**: `PM`
+- **주담당**: `Codex`
+- **실행 제품·모델**: OpenAI Codex / 정확한 런타임 모델 ID 미기록
+- **원 검증·코어 구현 담당**: `Claude`
+- **리뷰·최종 채택**: `Claude`, `PM`
+- **상태**: Codex 독립 검토와 문서 시안 완료
+
+### 입력
+
+- `origin/claude/dev` 커밋 `89c9585`의 `docs/plan-claude-response.md`, `tools/audit-repro.js`.
+- 현재 `src/core.js`, `docs/design-v0.4.md` §3.4, Codex 감사·계획 문서.
+
+### 검증·판단
+
+- Claude의 재현 스크립트를 독립 실행해 P0-A~E 5건을 모두 재현했다.
+- P0-E는 공급폭탄이 가격을 올리는 비정상 시드가 현재 9/14, 부호 반전 뒤 1/14임을 확인했다.
+- 공급 초과가 가격을 낮추도록 `capacityPressure`를 차감하는 방향에 동의했다.
+- 시대별 500시드 추가 실험에서 부호 수정 뒤 기본 행동의 ASP 연율 중앙값이 성숙기
+  -37.7%→-20.4%, 성장둔화기 -25.6%→-16.8%, AI +18.0%→+25.2%로 이동함을 확인했다.
+- 따라서 S0에서는 부호만 수정하고, 시대별 상수 재보정은 S2 fixture 기준선 이후 별도 작업으로 둔다.
+- D-001은 `P0 수정 → fixture → 하이브리드 A/B → PM 결정` 순서에 동의했다.
+- 현재 역산 Sufficiency를 실제 수급처럼 설명하지 않도록 trace 계약에 `implied_from_price`를 명시했다.
+- 결정 ID, 완료 예정·실제 턴, 결정/시장/경쟁사/시스템 원인 귀속과 근거 수준을 정의했다.
+- 동일 계약을 사용하는 Codex 인과 카드 시안 A의 화면 계층·표현 규칙·비교 기준을 작성했다.
+
+### 변경 제한 준수
+
+- `src/core.js`와 `validate.js`는 수정하지 않았다.
+- 카드 UI와 `src/trace.js` 구현은 시작하지 않고 문서 계약과 검증 도구만 작성했다.
+
+### 검증
+
+- Claude의 `tools/audit-repro.js` 실행: P0-A~E 5/5 `CONFIRMED`.
+- `node tools/codex-era-impact.js` 실행: 시대별 500시드 × 현재/부호수정 비교 완료.
+- `node --check tools/codex-era-impact.js`, `git diff --check` 통과.
+- `node build.js` 통과, `index.html` 변경 없음.
+- `node validate.js` 완료. 수정 전 기준선인 전략 격차 466%, 파산율 47%, 첫 전환 중앙값 T5 재확인.
+
+### 산출물
+
+- `docs/plan-codex-response.md`
+- `docs/trace-schema-v0.1.md`
+- `docs/causal-card-prototype-a.md`
+- `tools/codex-era-impact.js`
+
+### 다음 작업
+
+- `Claude`: S0~S3 구현 및 `trace-v0.1` 계약 리뷰·코어 훅 준비.
+- `Codex`: Claude 구현 뒤 P0 교차 검증, 승인된 fixture로 시안 A UI 구현.
+- `PM`: H-002, H-004, D-005 결정과 두 인과 카드 시안 최종 비교.
+
+---
+
 ## 2026-08-22 — S0 완료: capacityPressure 부호 수정 (담당: Claude, 독립검증 Codex)
 
-Codex가 `docs/plan-codex-response.md`(codex/design-v0.5 브랜치)에서 P0-A~E를 전부 독립
-재현하고, P0-E 부호 수정에 동의 + D-001 실행 순서(P0 수정 → fixture → 하이브리드 A/B → PM 결정)
-합의. 조건: S0 커밋에서는 부호만 고치고 `ERA_TILT`/계수 재조정은 S2로 미룰 것.
+Codex가 위 항목에서 P0-A~E를 전부 독립 재현하고, P0-E 부호 수정에 동의 + D-001 실행 순서
+(P0 수정 → fixture → 하이브리드 A/B → PM 결정) 합의. 조건: S0 커밋에서는 부호만 고치고
+`ERA_TILT`/계수 재조정은 S2로 미룰 것.
 
 - `src/core.js`: `dlnP` 계산에서 `+ capacityPressure` → `- capacityPressure` 한 줄 수정.
   근거 주석 추가(반응함수상 공급↑→Sufficiency↑→가격↓이 정설이라는 것).
@@ -244,4 +527,4 @@ Codex가 `docs/plan-codex-response.md`(codex/design-v0.5 브랜치)에서 P0-A~E
 
 ### 다음
 - S1: P0-A(Ramp Valley 1분기 결함) / P0-B(3개 결정 예산 코어 미강제) / P0-C(HBM 퀄 무임승차) /
-  P0-D(CXMT initialGap 오용) 실패 테스트 작성 후 수정.
+  P0-D(CXMT initialGap 오용) 실패 테스트 작성 후 수정. → PM 지시로 우선순위 변경(아래 항목 참고).
