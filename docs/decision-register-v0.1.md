@@ -62,8 +62,8 @@
 | P-001-A Codex 인과 카드 시안 | `Codex` | 설계 완료 | `docs/causal-card-prototype-a.md` |
 | X-SYNTH-001 정반합 초안 | `Claude+Codex` | 완료 | `docs/plan-synthesis.md` — P0 우선·인과 카드·에셋 정책·D-001 순서 합의 |
 | S0 P0-E 부호 수정 | `Claude` | 완료 | 커밋 `79ccf4f`, Codex 독립 검증(`plan-codex-response.md`) |
-| 최종 1차 합의 | `PM` | **완료** | H-002=30~40분, H-004=가상 브랜드 전면 교체, P0 에셋 목록 승인 |
-| X-005 v0.5 최종 승격 | `Claude` | 완료 | `docs/design-v0.5.md` — `design-v0.5-draft.md`를 이번 PM 결정 반영해 승격 |
+| 개별 항목 결정 | `PM` | 완료 | H-002=30~40분, H-004=가상 브랜드 전면 교체, P0 에셋 목록 승인 (개별 항목만 — 문서 전체 승인 아님) |
+| X-005 v0.5 최종 승격(초안) | `Claude` | **PM 검토 대기** | `docs/design-v0.5.md` — Claude가 개별 결정을 근거로 승격했으나 문서 전체를 PM이 확인한 적 없음. 확인 전 S1 이후 보류 |
 | A-004 가상 브랜드명 초안 | `Codex` | PM 검토 대기 | `docs/brand-name-proposals-v0.1.md` |
 
 ## 승인 방법
