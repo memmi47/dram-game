@@ -1,21 +1,19 @@
 #!/usr/bin/env node
-// Extracts the pure sim core from index.html (between ==SIM_START==/==SIM_END== markers)
-// and runs Monte Carlo checks: (1) no dominant fixed strategy, (2) no faction dominates Score.
+// Runs Monte Carlo checks against the pure sim core in src/core.js: (1) no dominant fixed
+// strategy, (2) no faction dominates Score. Reads the source directly (not the built
+// index.html) so validation doesn't require running `node build.js` first; src/core.js still
+// carries the ==SIM_START==/==SIM_END== markers so the same file, once stitched into
+// index.html by build.js, stays extractable from the shipped artifact too.
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
-const htmlPath = path.join(__dirname, 'index.html');
-const html = fs.readFileSync(htmlPath, 'utf8');
-const startMarker = '// ==SIM_START==';
-const endMarker = '// ==SIM_END==';
-const startIdx = html.indexOf(startMarker);
-const endIdx = html.indexOf(endMarker);
-if (startIdx === -1 || endIdx === -1) throw new Error('SIM markers not found in index.html');
-const coreSrc = html.slice(startIdx, endIdx + endMarker.length);
+const coreSrc = fs.readFileSync(path.join(__dirname, 'src/core.js'), 'utf8');
+if (!coreSrc.includes('// ==SIM_START==') || !coreSrc.includes('// ==SIM_END==')) {
+  throw new Error('src/core.js is missing the SIM_START/SIM_END markers');
+}
 
-const tmpFile = path.join(os.tmpdir(), 'dram-sim-core.generated.js');
+const tmpFile = path.join(require('os').tmpdir(), 'dram-sim-core.generated.js');
 fs.writeFileSync(tmpFile, coreSrc);
 const Sim = require(tmpFile);
 

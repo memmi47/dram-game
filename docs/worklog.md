@@ -111,3 +111,29 @@
 
 `docs/team-plan.md` 신설 — 에셋 목록/개발 구조/게임성 전략/업무 분장 1차 초안. 상세 내용은 해당
 문서 참고. PM 확인이 필요한 오픈 이슈는 `team-plan.md`의 "PM 확인 필요" 섹션에 정리.
+
+---
+
+## 2026-08-22 — PM 결정 3건 반영 + 소스 분리/빌드 도입 (담당: PM+Claude)
+
+PM이 team-plan.md 7절의 오픈 이슈 중 3건을 결정: (1) Codex는 병행 프로토타입형으로 운영, (2) 타겟
+유저는 일반 캐주얼 경영게임 유저(재미 우선, 실측 정확도 후순위), (3) 소스 분리 + 빌드 도입.
+
+(1),(2)는 `team-plan.md`에 반영만 하면 되는 결정이지만, (3)은 실제 구조 변경이 필요해 Claude가 그
+자리에서 구현:
+
+- `index.html`(812줄)을 `src/styles.css` / `src/core.js`(SIM_START/END 마커 유지) / `src/ui.js`
+  세 파일로 sed 분리 후, `template.html` + `build.js`(외부 npm 의존성 없는 순수 Node 스크립트)로
+  재조립하도록 구성. core/ui가 원래부터 `window.DramSimCore` 전역 참조로만 통신하고 있었기 때문에
+  실제 모듈 번들러(esbuild 등) 없이 단순 문자열 접합만으로 충분했다.
+- `node build.js`로 재생성한 `index.html`이 분리 전 원본과 **byte-for-byte 동일**함을 `diff`로 확인.
+- `validate.js`가 빌드된 `index.html`이 아니라 `src/core.js`를 직접 읽도록 변경 — 빌드를 먼저
+  돌리지 않아도 검증이 가능해짐(더 견고함).
+- Playwright 헤드리스 브라우저로 재빌드된 `index.html`을 40턴 완주 스모크 테스트, 콘솔 에러 0건.
+- `README.md`의 "실행/검증/아키텍처" 섹션을 새 워크플로우(`src/` 편집 → `node build.js` → 커밋)에
+  맞게 갱신. `index.html`은 계속 커밋되는 산출물로 유지 — 빌드 없이 바로 열어서 플레이 가능해야
+  하므로.
+
+### 남은 오픈 이슈 (team-plan.md 7절로 이동)
+- 병행 프로토타입 첫 주제가 아직 미정 — Claude/Codex가 각자 무엇부터 시도할지 PM 지정 필요.
+- 진영 실명 사용 여부, 원본 팹 픽셀아트 프로토타입 확보 여부는 미해결.

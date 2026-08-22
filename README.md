@@ -11,8 +11,24 @@ SK하이닉스 / 삼성전자 / 마이크론 / CXMT 중 한 진영을 맡아 노
 ## 실행
 
 ```
-open index.html   # 또는 브라우저에서 파일을 직접 연다. 서버/빌드 불필요.
+open index.html   # 또는 브라우저에서 파일을 직접 연다. 서버/설치 불필요.
 ```
+
+`index.html`은 커밋된 빌드 산출물이다 — 그냥 플레이만 할 사람은 `src/`를 몰라도 된다.
+
+## 개발
+
+소스는 `src/`에 분리되어 있고(`core.js`/`ui.js`/`styles.css`), `template.html`과 함께
+`node build.js`(외부 의존성 없는 순수 Node 스크립트)로 `index.html` 하나로 합쳐진다.
+`src/`를 수정했으면 커밋 전에 반드시 `node build.js`를 실행해 `index.html`을 최신 상태로 갱신할 것 —
+`index.html`을 직접 편집하지 않는다(다음 빌드에서 덮어써진다).
+
+```
+node build.js   # src/* + template.html → index.html
+```
+
+두 에이전트(Claude/Codex)가 동시에 작업할 때 파일 충돌을 줄이기 위한 구조다 — 자세한 배경은
+`docs/team-plan.md` 4절 참고.
 
 ## 검증
 
@@ -20,19 +36,19 @@ open index.html   # 또는 브라우저에서 파일을 직접 연다. 서버/�
 node validate.js
 ```
 
-`index.html`의 `// ==SIM_START==` ~ `// ==SIM_END==` 사이 순수 시뮬레이션 코어를 추출해 Node.js에서
-15개 시드 × 5개 고정 전략(균형형/HBM올인/물량방어/보수적생존/공격증설) × 4개 진영으로 몬테카를로를
-돌리고, 지배 전략 부재·진영 균형·파산율·노드 전환 타이밍을 콘솔에 리포트한다.
+`src/core.js`(DOM 비의존 순수 시뮬레이션 코어)를 Node.js에 그대로 불러와 15개 시드 × 5개 고정 전략
+(균형형/HBM올인/물량방어/보수적생존/공격증설) × 4개 진영으로 몬테카를로를 돌리고, 지배 전략 부재·
+진영 균형·파산율·노드 전환 타이밍을 콘솔에 리포트한다. 빌드 없이도 바로 실행 가능하다.
 
 ## 아키텍처
 
-- **시뮬레이션 코어** (`runQuarter(state, decisions, rng) → newState`): DOM에 의존하지 않는 순수 함수.
-  `state`는 JSON-직렬화 가능한 평범한 객체이므로 `JSON.parse(JSON.stringify(state))`로 매 턴 복제한다.
-  `index.html` 안에 `// ==SIM_START==` / `// ==SIM_END==` 주석으로 감싸 `validate.js`가 그대로
-  추출해 Node에서 재사용한다(프로토타입 관례 유지).
-- **UI 레이어**: 코어 위에서 상태를 그리기만 한다. 캔버스 팹 시각화(팹 실루엣은 고정, 라인 색상은
-  노드 세대 팔레트 스왑, HBM 배분 시 자주색 포드, Ramp Valley 중 조명 플리커), 국면 배지, 가격 미니 차트,
-  6개 레버(턴당 최대 3개 결정 강제), 경쟁사 요약 패널로 구성.
+- **시뮬레이션 코어** (`src/core.js`, `runQuarter(state, decisions, rng) → newState`): DOM에
+  의존하지 않는 순수 함수. `state`는 JSON-직렬화 가능한 평범한 객체이므로
+  `JSON.parse(JSON.stringify(state))`로 매 턴 복제한다. `// ==SIM_START==` / `// ==SIM_END==`
+  주석으로 감싸 `validate.js`와 빌드된 `index.html` 양쪽에서 추출 가능하게 유지한다(프로토타입 관례).
+- **UI 레이어** (`src/ui.js`): 코어 위에서 상태를 그리기만 한다. 캔버스 팹 시각화(팹 실루엣은 고정,
+  라인 색상은 노드 세대 팔레트 스왑, HBM 배분 시 자주색 포드, Ramp Valley 중 조명 플리커), 국면 배지,
+  가격 미니 차트, 6개 레버(턴당 최대 3개 결정 강제), 경쟁사 요약 패널로 구성.
 
 ## 구현된 4개 시스템 (v0.2 스코프)
 
