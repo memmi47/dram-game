@@ -4,7 +4,8 @@ DRAM 사이클 경영 시뮬레이터 v0.2 — 단일 HTML 파일(바닐라 JS)�
 SK하이닉스 / 삼성전자 / 마이크론 / CXMT 중 한 진영을 맡아 노드 전환·증설·수율 투자·HBM 배분·가동률·현금 관리를
 결정하고, 결과는 국면 기반 시장 가격과 3사 AI 경쟁사의 반응에 좌우된다.
 
-`handoffprompt v0.2 build`와 `DRAM-sim-design-v0.4` 두 문서의 실행 지침을 따른 구현체이다.
+`docs/handoff-prompt-v0.2.md`와 `docs/design-v0.4.md` 두 문서의 실행 지침을 따른 구현체이다.
+프로젝트 작업 이력(무엇을 언제 왜 했는지)은 `docs/worklog.md`에 시간순으로 기록한다.
 
 ## 실행
 
