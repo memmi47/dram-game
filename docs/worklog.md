@@ -219,3 +219,29 @@ Codex 0순위의 고정 시드 fixture를 예상보다 견고하게 만들 수 �
 ### 자기 비판
 `README.md`와 PR #1에 "지배 전략 부재(중앙값 기준)"를 통과로 체크했으나 `validate.js`는 평균 기준으로
 WARN을 출력하고 있었다. 서로 다른 지표로 통과를 주장한 부정확한 보고였다.
+
+---
+
+## 2026-08-22 — S0 완료: capacityPressure 부호 수정 (담당: Claude, 독립검증 Codex)
+
+Codex가 `docs/plan-codex-response.md`(codex/design-v0.5 브랜치)에서 P0-A~E를 전부 독립
+재현하고, P0-E 부호 수정에 동의 + D-001 실행 순서(P0 수정 → fixture → 하이브리드 A/B → PM 결정)
+합의. 조건: S0 커밋에서는 부호만 고치고 `ERA_TILT`/계수 재조정은 S2로 미룰 것.
+
+- `src/core.js`: `dlnP` 계산에서 `+ capacityPressure` → `- capacityPressure` 한 줄 수정.
+  근거 주석 추가(반응함수상 공급↑→Sufficiency↑→가격↓이 정설이라는 것).
+- 검증: 공급폭탄/공급억제 비교 시 "공급 늘렸는데 가격 오른" 시드가 14개 중 9개→1개로 축소.
+- `node validate.js` 새 기준선(성장둔화기): 전략간 평균 격차 466%→243%, 균형형 median 음수→
+  +1,906(양전환), 파산율 47%→30%. 코덱스가 지적한 466% WARN의 상당 부분이 이 버그였음을
+  뒷받침. 진영 균형은 계속 PASS.
+- Codex가 독립 실행한 `tools/codex-era-impact.js`(codex 브랜치, 500시드)를 그대로 재현해
+  수치 일치 확인 — 부호 수정이 시대별 ASP 캘리브레이션까지 자동으로 맞추지는 않는다는 것도
+  함께 확인됨(성숙기 -37.7%→-20.4%로 목표 미달, AI슈퍼사이클 +18.0%→+25.2%로 목표 초과,
+  성장둔화기만 -25.6%→-16.8%로 거의 일치). S2에서 `ERA_TILT`/계수 재조정 예정, 이번 커밋에는
+  미포함(Codex 조건 준수).
+- `node build.js`로 `index.html` 재생성, `tools/audit-repro.js`는 P0-E 앵커가 사라져 자동
+  SKIPPED로 처리됨(의도대로 — 고쳤으니 재현 불가한 게 맞음).
+
+### 다음
+- S1: P0-A(Ramp Valley 1분기 결함) / P0-B(3개 결정 예산 코어 미강제) / P0-C(HBM 퀄 무임승차) /
+  P0-D(CXMT initialGap 오용) 실패 테스트 작성 후 수정.

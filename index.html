@@ -434,11 +434,17 @@ function runQuarter(state, playerDecisions, rng) {
   const trendQGrowth = Math.pow(1 + ERAS[s.era].bitYoY, 0.25) - 1;
   const prevSupply = s.market.lastSupply || totalSupply;
   const actualSupplyQGrowth = prevSupply > 0 ? (totalSupply - prevSupply) / prevSupply : 0;
+  // P0-E fix: supply growing faster than the era trend must push price DOWN, per the reaction
+  // function (Sufficiency = Supply/Demand; higher Sufficiency -> lower price). capacityPressure
+  // is positive when supply outgrows trend, so it must be subtracted from dlnP, not added — the
+  // previous `+` let flooding supply raise price in 9/14 seeds. Era calibration (ERA_TILT,
+  // this coefficient) is deliberately left untouched here; it drifts after this fix and is
+  // re-measured in S2, not patched in the same commit as the sign correction.
   const capacityPressure = clamp(actualSupplyQGrowth - trendQGrowth, -0.15, 0.15) * 0.25;
   s.market.lastSupply = totalSupply;
 
   const noise = (rng() - 0.5) * 0.015;
-  const dlnP = clamp(s.market.regimePerQuarterLogReturn + noise + capacityPressure, -0.28, 0.28);
+  const dlnP = clamp(s.market.regimePerQuarterLogReturn + noise - capacityPressure, -0.28, 0.28);
   s.market.priceIndex *= Math.exp(dlnP);
   s.market.lastDlnP = dlnP;
 
