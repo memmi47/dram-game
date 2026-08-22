@@ -46,7 +46,7 @@
 | P-001 | 첫 병행 프로토타입 | 분기 결과 인과 카드 UI | 승인 | PM 승인 | Claude/Codex 독립 구현 뒤 PM 비교 |
 | W-001 | 작업이력 필드 | 담당·모델·리뷰어·입력·판단·검증·미결·산출물 필수 | 적용 중 |  |
 | A-003 | P0 에셋 인벤토리 | `asset-spec-v0.1.md`의 11종 | 승인 | PM 승인 | 그대로 승인, 제작 착수는 A-004(브랜드) 이후 |
-| A-004 | 진영 브랜드명 신규 제작 | H-004 후속 — 가상 브랜드명 4종 작명 | 신규 | PM 결정 대기 | 담당(PM/Claude/Codex) 미정, `plan-synthesis.md` §7 |
+| A-004 | 진영 브랜드명 신규 제작 | H-004 후속 — 가상 브랜드명 4종 작명 | Codex 초안 완료 | PM 결정 대기 | `docs/brand-name-proposals-v0.1.md`, 승인 전 사용 금지 |
 
 ## 리뷰 실행 상태
 
@@ -64,6 +64,7 @@
 | S0 P0-E 부호 수정 | `Claude` | 완료 | 커밋 `79ccf4f`, Codex 독립 검증(`plan-codex-response.md`) |
 | 최종 1차 합의 | `PM` | **완료** | H-002=30~40분, H-004=가상 브랜드 전면 교체, P0 에셋 목록 승인 |
 | X-005 v0.5 최종 승격 | `Claude` | 완료 | `docs/design-v0.5.md` — `design-v0.5-draft.md`를 이번 PM 결정 반영해 승격 |
+| A-004 가상 브랜드명 초안 | `Codex` | PM 검토 대기 | `docs/brand-name-proposals-v0.1.md` |
 
 ## 승인 방법
 

@@ -8,8 +8,11 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(ROOT, 'src/core.js'), 'utf8');
-const anchor = 'const dlnP = clamp(s.market.regimePerQuarterLogReturn + noise + capacityPressure, -0.28, 0.28);';
-if (!source.includes(anchor)) throw new Error('P0-E 앵커가 없다. core 변경 뒤 스크립트를 갱신해야 한다.');
+const legacyAnchor = 'const dlnP = clamp(s.market.regimePerQuarterLogReturn + noise + capacityPressure, -0.28, 0.28);';
+const fixedAnchor = 'const dlnP = clamp(s.market.regimePerQuarterLogReturn + noise - capacityPressure, -0.28, 0.28);';
+if (!source.includes(legacyAnchor) && !source.includes(fixedAnchor)) {
+  throw new Error('P0-E 앵커가 없다. core 변경 뒤 스크립트를 갱신해야 한다.');
+}
 
 function loadCore(text, tag) {
   const filename = path.join(os.tmpdir(), `dram-era-${tag}-${process.pid}.js`);
@@ -18,8 +21,8 @@ function loadCore(text, tag) {
 }
 
 const versions = {
-  current: loadCore(source, 'current'),
-  signFixed: loadCore(source.replace(anchor, anchor.replace('+ capacityPressure', '- capacityPressure')), 'fixed'),
+  legacyPlus: loadCore(source.replace(fixedAnchor, legacyAnchor), 'legacy'),
+  currentMinus: loadCore(source.replace(legacyAnchor, fixedAnchor), 'current'),
 };
 const eras = ['MATURE', 'SLOWDOWN', 'AI_SUPERCYCLE'];
 const modes = ['game-default', 'static-supply', 'trend-matched'];
@@ -31,7 +34,8 @@ function percentile(values, p) {
 
 function run(Sim, era, seed, mode) {
   const rng = Sim.mulberry32(seed);
-  let state = Sim.createInitialState('SKH', era, rng);
+  const playerFactionId = Sim.FACTIONS[0].id;
+  let state = Sim.createInitialState(playerFactionId, era, rng);
   state.eraBreakDone = true;
   state.companies.find(company => company.isPlayer).cash = 1e9;
 
@@ -66,7 +70,7 @@ for (const mode of modes) {
       };
     }
     const format = row => `median=${(row.median * 100).toFixed(1)}% p25=${(row.p25 * 100).toFixed(1)}% p75=${(row.p75 * 100).toFixed(1)}%`;
-    console.log(`  ${era.padEnd(14)} current ${format(rows.current)}`);
-    console.log(`  ${''.padEnd(14)} fixed   ${format(rows.signFixed)}`);
+    console.log(`  ${era.padEnd(14)} legacy(+pressure)  ${format(rows.legacyPlus)}`);
+    console.log(`  ${''.padEnd(14)} current(-pressure) ${format(rows.currentMinus)}`);
   }
 }

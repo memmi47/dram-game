@@ -577,3 +577,58 @@ PM 지시: "목표를 더 구체화·현실적으로 바꾸고, 그걸 기반으
 - S1(P0-A/B/C/D 수정)은 여전히 다음 실행 단계로 대기 중 — 이번 세션은 기획 확정에 집중.
 - Codex에게 이 세션 결과(특히 H-004 방향 전환)를 전달 필요 — 두 에이전트 권고와 다른 PM 결정이라
   `asset-spec-v0.1.md`의 A-COMP-001과 `causal-card-prototype-a.md` 카피 갱신에 영향.
+
+---
+
+## 2026-08-22 — 최신 main 재기준화·브랜드 플레이스홀더·A-004 작명 초안 (담당: Codex)
+
+- **작업 ID**: `X-SYNC-002`, `A-004`
+- **요청·최종 결정**: `PM`
+- **주담당**: `Codex`
+- **실행 제품·모델**: OpenAI Codex / 정확한 런타임 모델 ID 미기록
+- **리뷰·최종 승인**: `PM`
+- **상태**: 문서 정리·작명 초안 완료, PM 브랜드 결정 대기
+
+### 입력
+
+- 최신 `origin/main` 커밋 `a43ed58`.
+- `docs/design-v0.5.md`, `docs/plan-synthesis.md`, `docs/decision-register-v0.1.md`.
+- PM 결정 H-002=30~40분, H-004=가상 브랜드 전면 교체, P0 에셋 11종 승인.
+
+### 브랜치 정리
+
+- 기존 `codex/design-v0.5`의 고유 커밋이 0개이고 최신 Codex 작업 `9cebfd1`이 main에 흡수됐음을
+  확인한 뒤 브랜치를 `origin/main`의 `a43ed58`에서 다시 생성했다.
+- 재기준화 직전 상태는 main보다 4커밋 뒤였고, 재기준화 뒤 뒤처짐은 0이다.
+
+### 변경·판단
+
+- A-COMP-001을 `{{FACTION_NAME_1}}`~`{{FACTION_NAME_4}}` 플레이스홀더로 바꾸고 A-004 대기 상태를
+  명시했다.
+- 인과 카드 예시의 실명 `삼성·CXMT`를 플레이스홀더로 교체하고 브랜드 승인 전 S4 구현 보류를 기록했다.
+- trace의 진영 ID를 표시명과 분리된 `FACTION_1`~`FACTION_4`로 일반화했다.
+- ASP 감사 도구가 첫 진영 ID를 코어에서 읽고, 이미 적용된 P0-E 수정 전후를 모두 재현하도록 갱신했다.
+- Codex가 A-004 1차 작명을 맡아 `VetraStack`, `Auralith`, `Caelora`, `Orivex` 세트를 제안했다.
+- 이름은 1차 웹 중복 확인만 거친 창작 후보이며 정식 상표 검토 전에는 사용하지 않는다.
+
+### 산출물
+
+- `docs/brand-name-proposals-v0.1.md`
+- 갱신된 `docs/asset-spec-v0.1.md`, `docs/causal-card-prototype-a.md`.
+- 브랜드 독립화된 `docs/trace-schema-v0.1.md`, `tools/codex-era-impact.js`.
+
+### 검증
+
+- `git diff --check`, `node --check tools/codex-era-impact.js` 통과.
+- `node tools/codex-era-impact.js` 통과. 최신 P0-E 수정 코어와 legacy 부호의 시대별 500시드 비교 재현.
+- `node tools/audit-repro.js`: P0-A~D는 아직 `CONFIRMED`, P0-E는 수정 완료로 앵커가 없어 `SKIPPED`.
+- `node validate.js`: P0-E 수정 뒤 전략 평균 격차 243%, 파산율 30%, 첫 전환 중앙값 T5 기준선 확인.
+- `node build.js` 통과, 생성된 `index.html` 변경 없음.
+- 브랜드 의존 대상 문서·trace·감사 도구에서 실제 진영명과 `SKH/SEC/MU/CXMT` 하드코딩이 남지 않았음을
+  `rg`로 확인했다.
+
+### 다음 작업
+
+- `PM`: A-004 세트 채택·부분 수정·재작명 결정.
+- `Claude`: S1을 계속하고, PM 승인 뒤 `FACTIONS` 표시명 적용.
+- `Codex`: 브랜드명 승인 뒤에만 S4 인과 카드 시안 A 구현과 P0 에셋 제작을 시작.

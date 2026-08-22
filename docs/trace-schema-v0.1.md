@@ -40,7 +40,7 @@ QuarterTrace
 |---|---|---|
 | `id` | string | 한 실행 안에서 유일하고 생성 뒤 불변 |
 | `turn` | integer | 1부터 시작하는 정산 분기 |
-| `actorId` | string | `SKH`, `SEC`, `MU`, `CXMT`, `MARKET`, `SYSTEM` |
+| `actorId` | string | 브랜드 표시명과 분리된 불변 ID. 진영은 `FACTION_1`~`FACTION_4`, 그 외 `MARKET`, `SYSTEM` |
 | `value` | number/string/boolean | 표시 문자열 대신 원본값 |
 | `unit` | enum | `KRW_SIM`, `INDEX_POINT`, `LOG_RETURN`, `PERCENT`, `WAFER`, `BIT`, `QUARTER`, `LEVEL` |
 | `messageKey` | string | 선택 필드. 사용자 문장 대신 로케일 키만 저장 |
